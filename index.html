@@ -736,22 +736,27 @@
 
         @media (max-width: 768px) {
             body { overflow: hidden; }
-            .sidebar { position: fixed; left: -100%; transition: left 0.3s, transform 0.3s; z-index: 50; width: 85%; max-width: 320px; height: 100vh; height: 100dvh; top: 0; }
+            .sidebar { position: fixed; left: -100%; transition: left 0.3s; z-index: 50; width: 90%; max-width: 360px; height: 100vh; height: 100dvh; top: 0; }
             .sidebar.open { left: 0; }
-            .sidebar-backdrop { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 49; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+            .sidebar-backdrop { display: block; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 49; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
             .sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
             .menu-btn { display: flex !important; }
             .message { max-width: 95%; }
-            .chat-header { padding: 12px 16px; padding-top: calc(12px + env(safe-area-inset-top)); flex-shrink: 0; }
-            .messages-container { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
-            .input-area { padding: 12px 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); flex-shrink: 0; background: var(--bg-base); }
-            .action-bar { justify-content: flex-start; gap: 8px; flex-wrap: wrap; }
-            .action-bar button { padding: 6px 12px; font-size: 0.8rem; }
+            .chat-header { padding: 10px 12px; padding-top: calc(10px + env(safe-area-inset-top)); flex-shrink: 0; }
+            .chat-header .header-actions { gap: 6px; }
+            .chat-header .header-actions button { width: 32px; height: 32px; }
+            .messages-container { flex: 1; overflow-y: auto; padding: 12px; -webkit-overflow-scrolling: touch; }
+            .input-area { padding: 8px 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); flex-shrink: 0; background: var(--bg-base); }
+            .action-bar { display: none; }
             .header-info { min-width: 0; overflow: hidden; }
-            .current-agent-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-            .input-row { padding: 8px 8px 8px 16px; }
+            .current-agent-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; font-size: 0.95rem; }
+            .current-agent-sub { display: none; }
+            .input-row { padding: 6px 6px 6px 14px; }
             .input-row textarea { font-size: 16px; }
             .main-area { height: 100vh; height: 100dvh; overflow: hidden; }
+            .empty-state svg { width: 36px; height: 36px; margin-bottom: 12px; }
+            .empty-state h3 { font-size: 1rem; margin-bottom: 6px; }
+            .empty-state p { font-size: 0.8rem; max-width: 250px; }
         }
         .menu-btn {
             display: none;
@@ -1404,7 +1409,6 @@
             updateInputState();
             document.getElementById('btnSend').style.display = 'flex';
             document.getElementById('btnStop').style.display = 'none';
-            document.getElementById('userInput').focus();
         }
 
         function buildApiMessages(agent, conversationMessages) {
