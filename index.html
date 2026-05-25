@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#09090b">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,10 +59,15 @@
             background: var(--bg-base);
             color: var(--text-primary);
             height: 100vh;
+            height: 100dvh;
             display: flex;
             overflow: hidden;
             -webkit-font-smoothing: antialiased;
             line-height: 1.6;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         ::selection { background: var(--accent-glow); color: var(--accent-primary); }
@@ -80,7 +85,9 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            height: 100dvh;
             z-index: 10;
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         .sidebar-header {
@@ -287,6 +294,9 @@
             flex-direction: column;
             background: var(--bg-base);
             position: relative;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
         }
 
         .chat-header {
@@ -725,13 +735,35 @@
         }
 
         @media (max-width: 768px) {
-            .sidebar { position: absolute; left: -100%; transition: left 0.3s; z-index: 50; }
+            .sidebar { position: absolute; left: -100%; transition: left 0.3s; z-index: 50; width: 85%; max-width: 320px; }
             .sidebar.open { left: 0; }
+            .menu-btn { display: flex !important; }
             .message { max-width: 95%; }
-            .chat-header { padding: 16px 20px; }
-            .input-area { padding: 16px 20px 20px; }
-            .action-bar { justify-content: flex-start; }
+            .chat-header { padding: 12px 16px; padding-top: calc(12px + env(safe-area-inset-top)); }
+            .input-area { padding: 12px 16px; padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
+            .action-bar { justify-content: flex-start; gap: 8px; }
+            .action-bar button { padding: 6px 12px; font-size: 0.8rem; }
+            .messages-container { padding: 16px; }
+            .header-info { min-width: 0; overflow: hidden; }
+            .current-agent-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+            .input-row { padding: 8px 8px 8px 16px; }
+            .input-row textarea { font-size: 16px; }
         }
+        .menu-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-light);
+            background: var(--bg-surface);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .menu-btn:hover { background: var(--bg-surface-hover); color: var(--text-primary); }
     </style>
 </head>
 <body>
@@ -771,6 +803,9 @@
     <!-- ===== 主区域 ===== -->
     <div class="main-area">
         <div class="chat-header" id="chatHeader">
+            <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()" title="菜单">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
             <div class="header-avatar" id="headerAvatar">🤖</div>
             <div class="header-info">
                 <span class="current-agent-name" id="currentAgentName">选择或创建一个智能体</span>
@@ -865,6 +900,11 @@
 
         function getApiKey() {
             return localStorage.getItem(STORAGE_KEY_API) || '';
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
         }
 
         function saveApiKey() {
@@ -1032,6 +1072,13 @@
                     .then(() => console.log('Service Worker registered'))
                     .catch((err) => console.log('Service Worker registration failed:', err));
             }
+            document.addEventListener('click', (e) => {
+                const sidebar = document.getElementById('sidebar');
+                const menuBtn = document.getElementById('menuBtn');
+                if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
         }
 
         function autoResize() {
