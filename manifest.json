@@ -1,0 +1,30 @@
+{
+  "name": "DeepSeek Chat",
+  "short_name": "DeepSeek",
+  "description": "DeepSeek AI 智能体聊天平台 - 本地存储版",
+  "start_url": "/deepseek_html_20260525_240eb9.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "lang": "zh-CN",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "related_applications": [],
+  "scope": "./",
+  "prefer_related_applications": false
+}
